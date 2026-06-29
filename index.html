@@ -119,7 +119,7 @@
                 <label class="block font-medium text-slate-400 mb-2">Foto real del equipo:</label>
                 <input type="file" id="add-foto-file" accept="image/*" class="w-full text-xs text-slate-500 cursor-pointer">
                 <input type="hidden" id="foto-base64">
-                <div class="mt-3 flex justify-center"><img id="preview-foto" class="hidden w-20 h-20 object-cover rounded-xl border border-slate-700 shadow-md"></div>
+                <div class="mt-3 flex justify-center"><img id="preview-foto" class="hidden w-24 h-24 object-cover rounded-xl border border-slate-700 shadow-md"></div>
             </div>
             <div>
                 <label class="block font-medium text-slate-400 mb-1">Características:</label>
@@ -207,13 +207,14 @@
         </div>
     </footer>
 
-    <!-- MODAL DETALLE DE PRODUCTO -->
+    <!-- MODAL DETALLE DE PRODUCTO (FOTO AMPLIADA DE BORDE A BORDE) -->
     <div id="modal-detalle" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center hidden p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="cerrarModalDetalle()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl p-1 z-10"><i class="fa-solid fa-xmark"></i></button>
             
-            <div class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-3 flex justify-center items-center aspect-[4/3] overflow-hidden">
-                <img id="detalle-foto" src="" class="max-h-60 w-auto object-contain rounded-xl drop-shadow-lg">
+            <!-- Contenedor ampliado: La imagen llena todo el bloque con nitidez -->
+            <div class="w-full bg-gray-100 rounded-2xl overflow-hidden aspect-[4/3] flex justify-center items-center border border-gray-200">
+                <img id="detalle-foto" src="" class="w-full h-full object-cover shadow-sm">
             </div>
             
             <div class="text-center space-y-1">
@@ -285,6 +286,7 @@
         let marcaSeleccionada = 'Todas';
         let esAdminAutenticado = false;
 
+        // PROCESADOR DE IMÁGENES REPARADO: Ahora procesa a 1080p (Full HD) y con calidad máxima
         document.getElementById('add-foto-file').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -294,24 +296,29 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 250; canvas.height = 250;
-                    ctx.drawImage(img, 0, 0, 250, 250);
-                    const base64Ligero = canvas.toDataURL('image/jpeg', 0.6);
-                    document.getElementById('foto-base64').value = base64Ligero;
+                    
+                    // Escalado a 1080p manteniendo nitidez perfecta
+                    canvas.width = 1080; canvas.height = 1080;
+                    
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, 1080, 1080);
+                    
+                    // Calidad al 95% para preservar texturas reales del equipo
+                    const base64HD = canvas.toDataURL('image/jpeg', 0.95);
+                    document.getElementById('foto-base64').value = base64HD;
                     const preview = document.getElementById('preview-foto');
-                    preview.src = base64Ligero; preview.classList.remove('hidden');
+                    preview.src = base64HD; preview.classList.remove('hidden');
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
 
-        // Cargar inventario y validar si ya existe sesión de administración activa
         function cargarInventarioNube() {
             const datosLocales = localStorage.getItem('tucocel_inventario');
             PRODUCTOS = datosLocales ? JSON.parse(datosLocales) : [];
             
-            // Auto-login: Revisa si el suiche de admin quedó encendido en este dispositivo
             const sesionActiva = localStorage.getItem('tucocel_admin_sesion');
             if (sesionActiva === 'true') {
                 esAdminAutenticado = true;
@@ -346,7 +353,7 @@
             
             contenedor.innerHTML = '';
             lista.forEach(prod => {
-                const fotoProd = prod.foto || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&auto=format&fit=crop&q=60';
+                const fotoProd = prod.foto || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80';
                 const botonesEdicion = esAdminAutenticado ? `
                     <div class="flex gap-2 border-t border-gray-100 pt-2 mt-1 w-full justify-center">
                         <button onclick="event.stopPropagation(); editarPrecio('${prod.id}')" class="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 bg-blue-50 rounded-lg font-bold"><i class="fa-solid fa-pen-to-square mr-1"></i>Precio</button>
@@ -354,11 +361,12 @@
                     </div>
                 ` : '';
 
+                // DISEÑO DE TARJETA CORREGIDO: La imagen llena el contenedor fluidamente sin bordes blancos vacíos
                 contenedor.innerHTML += `
                     <div onclick="abrirDetalleProducto('${prod.id}')" class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col justify-between transition-all cursor-pointer hover:shadow-xl hover:border-gray-200 group relative">
                         <div>
-                            <div class="aspect-square w-full bg-gray-50 border border-gray-100 rounded-xl overflow-hidden mb-4 flex justify-center items-center p-2">
-                                <img src="${fotoProd}" class="max-h-40 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform duration-300 drop-shadow-md" onerror="this.src='https://via.placeholder.com/150'">
+                            <div class="aspect-square w-full bg-gray-50 border border-gray-100 rounded-xl overflow-hidden mb-4 flex justify-center items-center">
+                                <img src="${fotoProd}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400'">
                             </div>
                             <span class="text-[9px] font-extrabold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md inline-block mb-1.5">${prod.marca}</span>
                             <h3 class="font-bold text-gray-900 text-base group-hover:text-blue-600 transition-colors truncate">${prod.modelo}</h3>
@@ -386,12 +394,12 @@
             const prod = PRODUCTOS.find(p => p.id === id);
             if (!prod) return;
 
-            document.getElementById('detalle-foto').src = prod.foto || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&auto=format&fit=crop&q=60';
+            document.getElementById('detalle-foto').src = prod.foto || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80';
             document.getElementById('detalle-marca').innerText = prod.marca;
             document.getElementById('detalle-modelo').innerText = prod.modelo;
             document.getElementById('detalle-memoria').innerText = prod.memoria || 'Estándar';
             document.getElementById('detalle-desc').innerText = prod.desc || 'Sin descripción adicional.';
-            document.getElementById('detalle-precio').innerText = `$${prod.precio}`;
+            document.getElementById('detalle-precio').innerText = `${prod.precio}`;
             
             const btnAgregar = document.getElementById('btn-detalle-agregar');
             btnAgregar.onclick = function() {
@@ -411,10 +419,7 @@
             const pass = document.getElementById('admin-pass').value.trim();
             if(user === ADMIN_USER && pass === ADMIN_PASS) {
                 esAdminAutenticado = true;
-                
-                // Fijar sesión guardada para que no la vuelva a pedir
                 localStorage.setItem('tucocel_admin_sesion', 'true');
-                
                 cerrarLoginAdmin();
                 document.getElementById('panel-admin').classList.remove('hidden');
                 ejecutarFiltroCombinado();
@@ -425,10 +430,7 @@
 
         function cerrarSesionAdmin() {
             esAdminAutenticado = false;
-            
-            // Apagar el suiche de la sesión guardada
             localStorage.removeItem('tucocel_admin_sesion');
-            
             document.getElementById('panel-admin').classList.add('hidden');
             ejecutarFiltroCombinado();
         }
@@ -458,7 +460,6 @@
             alert('¡Equipo guardado con éxito en el inventario permanente!');
         }
 
-        // Corrección de nombre interno para evitar fallos de renderizado
         function guardarInventoryNube() { guardarInventarioNube(); }
 
         function editarPrecio(id) {
@@ -529,34 +530,4 @@
         function enviarPedidoWhatsApp() {
             const nombre = document.getElementById('cliente-nombre').value.trim();
             const telefono = document.getElementById('cliente-telefono').value.trim();
-            const pago = document.getElementById('cliente-pago').value;
-            const direccion = document.getElementById('cliente-direccion').value.trim();
-
-            if(!nombre || !telefono || !direccion) { alert("Por favor complete todos los campos obligatorios (*)"); return; }
-
-            let mensaje = `*NUEVO PEDIDO - TUCOCEL C.A.*\n\n`;
-            mensaje += `*Cliente:* ${nombre}\n`;
-            mensaje += `*Teléfono:* ${telefono}\n`;
-            mensaje += `*Forma de Pago:* ${pago}\n`;
-            mensaje += `*Dirección:* ${direccion}\n\n`;
-            mensaje += `*Equipos Solicitados:*\n`;
-
-            carrito.forEach((item, index) => {
-                mensaje += `${index + 1}. ${item.marca} ${item.modelo} - $${item.precio} USD\n`;
-            });
-
-            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-            mensaje += `\n*TOTAL ESTIMADO:* $${total}.00 USD`;
-
-            // CONFIGURADO CON TU NÚMERO DE WHATSAPP COMERCIAL REAL (0424-7357549)
-            const linkWha = `https://wa.me/584247357549?text=${encodeURIComponent(mensaje)}`;
-            window.open(linkWha, '_blank');
-            carrito = [];
-            actualizarInterfazCarrito();
-            cerrarModalPago();
-        }
-
-        window.onload = cargarInventarioNube;
-    </script>
-</body>
-</html>
+            constNormally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
