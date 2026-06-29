@@ -33,7 +33,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-extrabold text-gray-900 tracking-tight block">TUCOCEL C.A.</span>
-                        <span class="text-[10px] text-blue-600 font-bold tracking-widest block -mt-1 uppercase">Agencia Autorizada Movistar</span>
+                        <span class="text-[10px] text-blue-600 font-bold tracking-widest block -mt-1 uppercase">Agente Autorizado Movistar</span>
                     </div>
                 </div>
                 <!-- Botón de Administración Protegido -->
@@ -59,30 +59,6 @@
             </p>
         </div>
     </header>
-
-    <!-- SECCIÓN ADICIONAL: SERVICIOS Y ACCESORIOS (NUEVA) -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <div class="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="flex items-center gap-4 p-2">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
-                    <i class="fa-solid fa-plug"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm">Accesorios Premium</h4>
-                    <p class="text-gray-500 text-xs mt-0.5 leading-relaxed">También contamos con una amplia variedad de accesorios de alta calidad para celulares y computadoras.</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4 p-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-2 md:pl-6">
-                <div class="w-12 h-12 bg-slate-900 text-blue-400 rounded-2xl flex items-center justify-center text-xl shrink-0">
-                    <i class="fa-solid fa-laptop-medical"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm">Servicio Técnico Especializado</h4>
-                    <p class="text-gray-500 text-xs mt-0.5 leading-relaxed">Soporte y reparación profesional para teléfonos, computadoras, laptops e impresoras. ¡Dejamos tus equipos como nuevos!</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- MODAL LOGIN ADMINISTRADOR -->
     <div id="modal-login" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center hidden p-4 backdrop-blur-sm">
@@ -189,22 +165,29 @@
             <p class="col-span-full text-center text-xs text-gray-400 py-10"><i class="fa-solid fa-spinner fa-spin text-blue-600 mr-2"></i> Conectando de forma segura con la nube de Servicell...</p>
         </div>
 
-        <!-- RESPALDO COMERCIAL Y MÉTODOS DE PAGO -->
-        <div class="mt-12 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-5 max-w-4xl mx-auto sm:mx-0">
-            <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"><i class="fa-solid fa-circle-info text-blue-600 mr-1"></i> Respaldo Comercial Tucocel</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-50 pb-5">
-                <div class="flex items-start gap-3 text-xs">
-                    <div class="bg-blue-50 text-blue-600 p-2.5 rounded-xl shrink-0"><i class="fa-solid fa-store text-sm"></i></div>
-                    <div><p class="font-bold text-gray-800 text-sm">Tienda Física Segura</p><p class="text-gray-500 font-normal text-[11px] mt-0.5">Todos los pedidos se retiran y comprueban en nuestro local para tu total tranquilidad y garantía.</p></div>
+        <!-- RESPALDO COMERCIAL Y MÉTODOS DE PAGO (INTEGRA LOS ACCESORIOS Y SERVICIO TÉCNICO ABAJO) -->
+        <div class="mt-12 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-6 max-w-4xl mx-auto sm:mx-0">
+            <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"><i class="fa-solid fa-circle-info text-blue-600 mr-1"></i> Servicios Especializados Tucocel</h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-gray-100 pb-6">
+                <div class="flex items-start gap-4 text-xs">
+                    <div class="bg-blue-50 text-blue-600 p-3 rounded-2xl shrink-0 text-lg"><i class="fa-solid fa-plug"></i></div>
+                    <div>
+                        <p class="font-bold text-gray-800 text-sm">Accesorios Premium</p>
+                        <p class="text-gray-500 font-normal text-xs mt-0.5 leading-relaxed">Contamos con una amplia variedad de accesorios de alta calidad para tu celular y computadoras.</p>
+                    </div>
                 </div>
-                <div class="flex items-start gap-3 text-xs">
-                    <div class="bg-slate-900 text-blue-400 p-2.5 rounded-xl shrink-0"><i class="fa-solid fa-laptop-medical text-sm"></i></div>
-                    <div><p class="font-bold text-gray-800 text-sm">Soporte Técnico Especializado</p><p class="text-gray-500 font-normal text-[11px] mt-0.5">Consigue accesorios premium. Ofrecemos servicio calificado para teléfonos, computadoras, laptops e impresoras.</p></div>
+                <div class="flex items-start gap-4 text-xs">
+                    <div class="bg-slate-900 text-blue-400 p-3 rounded-2xl shrink-0 text-lg"><i class="fa-solid fa-laptop-medical"></i></div>
+                    <div>
+                        <p class="font-bold text-gray-800 text-sm">Servicio Técnico Garantizado</p>
+                        <p class="text-gray-500 font-normal text-xs mt-0.5 leading-relaxed">Soporte y reparación calificada para teléfonos, computadoras, laptops e impresoras en nuestro local.</p>
+                    </div>
                 </div>
             </div>
             
             <div class="pt-1 text-center">
-                <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-4">Métodos de Pago Aceptados en Local</p>
+                <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-4">Métodos de Pago Aceptados</p>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
                     <div class="bg-gray-50 border border-gray-100 rounded-2xl p-3 flex flex-col items-center justify-center"><span class="text-xl text-red-600 font-black"><i class="fa-solid fa-building-columns"></i></span><span class="text-[9px] font-bold text-gray-700 mt-1 uppercase leading-tight">Pago Móvil</span></div>
                     <div class="bg-gray-50 border border-gray-100 rounded-2xl p-3 flex flex-col items-center justify-center"><span class="text-xl text-amber-500 font-black"><i class="fa-solid fa-coins"></i></span><span class="text-[9px] font-bold text-gray-700 mt-1 uppercase leading-tight">Binance USDT</span></div>
@@ -570,4 +553,4 @@
         window.onload = cargarInventarioNube;
     </script>
 </body>
-</html>
+        </html>
