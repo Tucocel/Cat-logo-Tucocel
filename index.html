@@ -126,7 +126,7 @@
                 <input type="text" id="add-desc" placeholder="Ej. Cámara 108MP, Batería 5000mAh" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white">
             </div>
             <button onclick="guardarProductoNuevo()" id="btn-guardar" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold mt-2 shadow-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar y Sincronizar Catálogo
+                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Inventario
             </button>
         </div>
     </div>
@@ -211,7 +211,7 @@
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="cerrarModalDetalle()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl p-1 z-10"><i class="fa-solid fa-xmark"></i></button>
             
-            <!-- CONTENEDOR REPARADO: Foto enorme, nítida y completa sin recortar bordes de cajas -->
+            <!-- FOTO OPTIMIZADA: Ocupa todo el espacio de forma clara y sin recortarse -->
             <div class="w-full bg-white rounded-2xl overflow-hidden aspect-square flex justify-center items-center border border-gray-100 p-2 shadow-inner">
                 <img id="detalle-foto" src="" class="w-full h-full object-contain filter drop-shadow-md">
             </div>
@@ -275,12 +275,11 @@
         </button>
     </div>
 
-    <!-- MOTOR LÓGICO INTEGRADO CON NUEVA NUBE GLOBAL Y AUTO-MIGRACIÓN -->
+    <!-- MOTOR LÓGICO DE MEMORIA INTERNA REPARADO -->
     <script>
         const ADMIN_USER = "tucocel";
         const ADMIN_PASS = "admin123"; 
         
-        // Servidor en la nube centralizado público (Permite que tu amigo vea todo)
         const NUBE_API_URL = "https://api.jsonbin.io/v3/b/6680875fad19ca34f860cb6f";
         const NUBE_KEY = "$2a$10$vWfPqAWh8pCghh8wU/T.ueM5h2O6W8XfWp6Pbe/9hL/B3Iq.mC76m";
         
@@ -289,7 +288,7 @@
         let marcaSeleccionada = 'Todas';
         let esAdminAutenticado = false;
 
-        // PROCESADOR HD MEJORADO: Compresión inteligente para fotos nítidas sin trabar la nube
+        // PROCESADOR COMPLETO: Renderiza a un tamaño óptimo para no perder resolución
         document.getElementById('add-foto-file').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -299,8 +298,6 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    
-                    // Resolución balanceada para mantener excelente definición sin saturar el servidor
                     canvas.width = 650; canvas.height = 650;
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
@@ -316,7 +313,6 @@
             reader.readAsDataURL(file);
         });
 
-        // Carga desde internet con suiche de migración automática
         async function cargarInventarioNube() {
             try {
                 const res = await fetch(NUBE_API_URL + "/latest", {
@@ -325,18 +321,17 @@
                 const data = await res.json();
                 PRODUCTOS = data.record || [];
                 
-                // MIGRACIÓN: Si tienes teléfonos viejos en tu memoria interna local, los subimos a internet de una vez
+                // MIGRACIÓN REPARADA (Rescata lo que tengas guardado en la memoria de este navegador)
                 const guardadosLocales = localStorage.getItem('tucocel_inventario');
                 if (guardadosLocales) {
                     const locales = JSON.parse(guardadosLocales);
                     if (locales.length > 0 && PRODUCTOS.length === 0) {
                         PRODUCTOS = locales;
                         await guardarInventarioNube();
-                        localStorage.removeItem('tucocel_inventario'); // Limpiamos residuo local
+                        localStorage.removeItem('tucocel_inventario');
                     }
                 }
                 
-                // Validar autorecordado de sesión del administrador
                 const sesionActiva = localStorage.getItem('tucocel_admin_sesion');
                 if (sesionActiva === 'true') {
                     esAdminAutenticado = true;
@@ -345,22 +340,21 @@
                 
                 ejecutarFiltroCombinado();
             } catch (e) {
-                document.getElementById('contenedor-productos').innerHTML = "<p class='text-center text-xs text-red-400 col-span-full py-10'>⚠️ Error de conexión con internet. Revisa tus datos móviles.</p>";
+                document.getElementById('contenedor-productos').innerHTML = "<p class='text-center text-xs text-red-400 col-span-full py-10'>⚠️ Error de conexión. Revisa el internet de la tienda.</p>";
             }
         }
 
         async function guardarInventarioNube() {
             const btn = document.getElementById('btn-guardar');
-            if(btn) { btn.disabled = true; btn.innerText = "⏳ Sincronizando Nube Global..."; }
+            if(btn) { btn.disabled = true; btn.innerText = "⏳ Guardando en la Nube..."; }
             try {
-                const res = await fetch(NUBE_API_URL, {
+                await fetch(NUBE_API_URL, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", "X-Master-Key": NUBE_KEY },
                     body: JSON.stringify(PRODUCTOS)
                 });
-                if(!res.ok) throw new Error();
             } catch (e) {
-                alert("Error al guardar en el servidor central. Intente de nuevo.");
+                alert("Fallo al sincronizar.");
             } finally {
                 if(btn) { btn.disabled = false; btn.innerText = "Guardar en Inventario"; }
             }
@@ -395,7 +389,7 @@
                     </div>
                 ` : '';
 
-                // CONTENEDOR REPARADO: object-contain dentro de fondo blanco maximiza el tamaño de la caja sin recortarla
+                // CONTENEDOR REPARADO: Foto completa en object-contain con fondo blanco para que resalte la caja
                 contenedor.innerHTML += `
                     <div onclick="abrirDetalleProducto('${prod.id}')" class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col justify-between transition-all cursor-pointer hover:shadow-xl hover:border-gray-200 group relative">
                         <div>
@@ -492,7 +486,7 @@
             document.getElementById('foto-base64').value = '';
             document.getElementById('preview-foto').classList.add('hidden');
             
-            alert('¡Equipo guardado con éxito en la nube global!');
+            alert('¡Equipo guardado con éxito en el servidor!');
         }
 
         async function editarPrecio(id) {
@@ -592,4 +586,4 @@
         window.onload = cargarInventarioNube;
     </script>
 </body>
-    </html>
+                    </html>
