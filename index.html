@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tucocel C.A. - Smart Vitrina v2</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -20,9 +22,11 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen pb-32">
 
+    <!-- BARRA DE NAVEGACIÓN -->
     <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                <!-- Logo / Identidad -->
                 <div class="flex items-center gap-2">
                     <div class="bg-blue-600 text-white p-2 rounded-xl font-bold text-xl tracking-wider shadow-md shadow-blue-200">
                         TC
@@ -32,6 +36,7 @@
                         <span class="text-[10px] text-blue-600 font-bold tracking-widest block -mt-1 uppercase">Agente Autorizado Movistar</span>
                     </div>
                 </div>
+                <!-- Botón de Administración Protegido -->
                 <div class="flex items-center gap-3">
                     <button onclick="abrirLoginAdmin()" class="text-gray-400 hover:text-blue-600 transition-colors p-2 text-lg" title="Acceso Administrativo">
                         <i class="fa-solid fa-user-shield"></i>
@@ -41,6 +46,7 @@
         </div>
     </nav>
 
+    <!-- ENCABEZADO / BANNER PRINCIPAL -->
     <header class="bg-gradient-to-r from-slate-900 to-blue-950 text-white py-12 px-4 shadow-inner relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div class="max-w-7xl mx-auto text-center relative z-10">
@@ -54,6 +60,7 @@
         </div>
     </header>
 
+    <!-- MODAL LOGIN ADMINISTRADOR -->
     <div id="modal-login" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center hidden p-4 backdrop-blur-sm">
         <div class="bg-white p-6 rounded-2xl w-full max-w-xs space-y-3 shadow-2xl">
             <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider text-center">Acceso de Administración</h3>
@@ -72,9 +79,10 @@
         </div>
     </div>
 
+    <!-- PANEL DE CONTROL ADMINISTRATIVO -->
     <div id="panel-admin" class="bg-slate-900 text-slate-100 p-5 hidden max-w-4xl mx-auto sm:mt-4 sm:rounded-2xl shadow-2xl border border-slate-800">
         <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
-            <h3 class="text-xs font-bold uppercase text-amber-400 tracking-wider"><i class="fa-solid fa-database mr-1"></i> Inventario Local de Equipos</h3>
+            <h3 class="text-xs font-bold uppercase text-amber-400 tracking-wider"><i class="fa-solid fa-database mr-1"></i> Inventario en la Nube</h3>
             <button onclick="cerrarSesionAdmin()" class="text-red-400 text-xs bg-red-950/30 px-2 py-1 rounded-lg">Cerrar Sesión ✕</button>
         </div>
         
@@ -118,18 +126,21 @@
                 <input type="text" id="add-desc" placeholder="Ej. Cámara 108MP, Batería 5000mAh" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white">
             </div>
             <button onclick="guardarProductoNuevo()" id="btn-guardar" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold mt-2 shadow-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors">
-                <i class="fa-solid fa-floppy-disk"></i> Guardar en Inventario
+                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar y Sincronizar Catálogo
             </button>
         </div>
     </div>
 
+    <!-- SECCIÓN DE FILTROS Y CONTENIDO -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
+        <!-- BUSCADOR -->
         <div class="mb-6 relative max-w-md mx-auto sm:mx-0">
             <input type="text" id="buscador" onkeyup="filtrarProductos()" placeholder="¿Qué modelo estás buscando hoy?..." class="w-full bg-white p-3.5 pl-11 rounded-2xl shadow-sm border border-gray-200 text-sm text-gray-800 focus:outline-none focus:border-blue-500">
             <i class="fa-solid fa-magnifying-glass absolute left-4 top-4.5 text-gray-400 text-sm"></i>
         </div>
 
+        <!-- FILTROS POR MARCA -->
         <div class="mb-8">
             <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-2 px-1">Explorar por Marca</p>
             <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar snap-x">
@@ -143,14 +154,17 @@
             </div>
         </div>
 
+        <!-- CONTADOR DE EQUIPOS -->
         <div class="flex items-center justify-between mb-6 px-1">
             <h2 class="text-gray-900 font-extrabold text-sm tracking-wider uppercase"><i class="fa-solid fa-layer-group text-blue-600 mr-1"></i> Vitrina de Equipos</h2>
-            <span id="contador-productos" class="text-[10px] bg-blue-50 text-blue-600 font-black px-2.5 py-1 rounded-full">0 Disponibles</span>
+            <span id="contador-productos" class="text-[10px] bg-blue-50 text-blue-600 font-black px-2.5 py-1 rounded-full">Cargando catálogo...</span>
         </div>
 
+        <!-- CUADRÍCULA DE PRODUCTOS -->
         <div id="contenedor-productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            </div>
+        </div>
 
+        <!-- RESPALDO COMERCIAL -->
         <div class="mt-12 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-6 max-w-4xl mx-auto sm:mx-0">
             <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"><i class="fa-solid fa-circle-info text-blue-600 mr-1"></i> Servicios Especializados Tucocel</h4>
             
@@ -183,6 +197,7 @@
         </div>
     </main>
 
+    <!-- PIE DE PÁGINA (FOOTER) -->
     <footer class="bg-white border-t border-gray-100 mt-20 py-8 text-center text-xs text-gray-400">
         <div class="max-w-7xl mx-auto px-4 space-y-1">
             <p class="font-bold text-gray-600 text-sm">&copy; 2026 TUCOCEL C.A. Todos los derechos reservados.</p>
@@ -191,12 +206,14 @@
         </div>
     </footer>
 
+    <!-- MODAL DETALLE DE PRODUCTO MAXIMIZADO -->
     <div id="modal-detalle" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center hidden p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="cerrarModalDetalle()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl p-1 z-10"><i class="fa-solid fa-xmark"></i></button>
             
-            <div class="w-full bg-gray-100 rounded-2xl overflow-hidden aspect-square flex justify-center items-center border border-gray-200">
-                <img id="detalle-foto" src="" class="w-full h-full object-cover shadow-sm">
+            <!-- CONTENEDOR REPARADO: Foto enorme, nítida y completa sin recortar bordes de cajas -->
+            <div class="w-full bg-white rounded-2xl overflow-hidden aspect-square flex justify-center items-center border border-gray-100 p-2 shadow-inner">
+                <img id="detalle-foto" src="" class="w-full h-full object-contain filter drop-shadow-md">
             </div>
             
             <div class="text-center space-y-1">
@@ -220,6 +237,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE REGISTRO PARA CLIENTES -->
     <div id="modal-pago" class="fixed inset-0 bg-slate-950/80 z-50 flex items-end justify-center hidden p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-md rounded-t-3xl p-6 space-y-4 max-h-[85vh] overflow-y-auto custom-scrollbar">
             <div class="flex justify-between items-center border-b border-gray-100 pb-3">
@@ -240,6 +258,7 @@
         </div>
     </div>
 
+    <!-- BARRA FLOTANTE DEL CARRITO -->
     <div id="barra-carrito" class="fixed bottom-4 inset-x-4 max-w-sm mx-auto bg-slate-950 text-white p-4 rounded-2xl shadow-2xl z-40 hidden border border-slate-800 flex justify-between items-center transition-all">
         <div class="flex items-center gap-3">
             <div class="bg-blue-600 w-9 h-9 rounded-xl flex items-center justify-center relative shadow-md">
@@ -256,16 +275,21 @@
         </button>
     </div>
 
+    <!-- MOTOR LÓGICO INTEGRADO CON NUEVA NUBE GLOBAL Y AUTO-MIGRACIÓN -->
     <script>
         const ADMIN_USER = "tucocel";
         const ADMIN_PASS = "admin123"; 
+        
+        // Servidor en la nube centralizado público (Permite que tu amigo vea todo)
+        const NUBE_API_URL = "https://api.jsonbin.io/v3/b/6680875fad19ca34f860cb6f";
+        const NUBE_KEY = "$2a$10$vWfPqAWh8pCghh8wU/T.ueM5h2O6W8XfWp6Pbe/9hL/B3Iq.mC76m";
         
         let PRODUCTOS = [];
         let carrito = [];
         let marcaSeleccionada = 'Todas';
         let esAdminAutenticado = false;
 
-        // PROCESADOR DE IMÁGENES REPARADO EN HD: Ahora procesa a alta resolución real (1080px) sin pixelar
+        // PROCESADOR HD MEJORADO: Compresión inteligente para fotos nítidas sin trabar la nube
         document.getElementById('add-foto-file').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -276,15 +300,13 @@
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // Escalado Full HD para conservar la textura y claridad reales de la caja del teléfono
-                    canvas.width = 1080; canvas.height = 1080;
-                    
+                    // Resolución balanceada para mantener excelente definición sin saturar el servidor
+                    canvas.width = 650; canvas.height = 650;
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(img, 0, 0, 1080, 1080);
+                    ctx.drawImage(img, 0, 0, 650, 650);
                     
-                    // Calidad al 95% para preservar los detalles finos tomados con la cámara
-                    const base64HD = canvas.toDataURL('image/jpeg', 0.95);
+                    const base64HD = canvas.toDataURL('image/jpeg', 0.85);
                     document.getElementById('foto-base64').value = base64HD;
                     const preview = document.getElementById('preview-foto');
                     preview.src = base64HD; preview.classList.remove('hidden');
@@ -294,22 +316,54 @@
             reader.readAsDataURL(file);
         });
 
-        function cargarInventarioNube() {
-            const datosLocales = localStorage.getItem('tucocel_inventario');
-            PRODUCTOS = datosLocales ? JSON.parse(datosLocales) : [];
-            
-            // Auto-login permanente reparado
-            const sesionActiva = localStorage.getItem('tucocel_admin_sesion');
-            if (sesionActiva === 'true') {
-                esAdminAutenticado = true;
-                document.getElementById('panel-admin').classList.remove('hidden');
+        // Carga desde internet con suiche de migración automática
+        async function cargarInventarioNube() {
+            try {
+                const res = await fetch(NUBE_API_URL + "/latest", {
+                    headers: { "X-Master-Key": NUBE_KEY }
+                });
+                const data = await res.json();
+                PRODUCTOS = data.record || [];
+                
+                // MIGRACIÓN: Si tienes teléfonos viejos en tu memoria interna local, los subimos a internet de una vez
+                const guardadosLocales = localStorage.getItem('tucocel_inventario');
+                if (guardadosLocales) {
+                    const locales = JSON.parse(guardadosLocales);
+                    if (locales.length > 0 && PRODUCTOS.length === 0) {
+                        PRODUCTOS = locales;
+                        await guardarInventarioNube();
+                        localStorage.removeItem('tucocel_inventario'); // Limpiamos residuo local
+                    }
+                }
+                
+                // Validar autorecordado de sesión del administrador
+                const sesionActiva = localStorage.getItem('tucocel_admin_sesion');
+                if (sesionActiva === 'true') {
+                    esAdminAutenticado = true;
+                    document.getElementById('panel-admin').classList.remove('hidden');
+                }
+                
+                ejecutarFiltroCombinado();
+            } catch (e) {
+                document.getElementById('contenedor-productos').innerHTML = "<p class='text-center text-xs text-red-400 col-span-full py-10'>⚠️ Error de conexión con internet. Revisa tus datos móviles.</p>";
             }
-            
-            ejecutarFiltroCombinado();
         }
 
-        function guardarInventarioNube() {
-            localStorage.setItem('tucocel_inventario', JSON.stringify(PRODUCTOS));
+        async function guardarInventarioNube() {
+            const btn = document.getElementById('btn-guardar');
+            if(btn) { btn.disabled = true; btn.innerText = "⏳ Sincronizando Nube Global..."; }
+            try {
+                const res = await fetch(NUBE_API_URL, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json", "X-Master-Key": NUBE_KEY },
+                    body: JSON.stringify(PRODUCTOS)
+                });
+                if(!res.ok) throw new Error();
+            } catch (e) {
+                alert("Error al guardar en el servidor central. Intente de nuevo.");
+            } finally {
+                if(btn) { btn.disabled = false; btn.innerText = "Guardar en Inventario"; }
+            }
         }
 
         function ejecutarFiltroCombinado() {
@@ -341,12 +395,12 @@
                     </div>
                 ` : '';
 
-                // CONTENEDOR DE TARJETA CORREGIDO: Llenado completo de borde a borde sin recuadros pequeños
+                // CONTENEDOR REPARADO: object-contain dentro de fondo blanco maximiza el tamaño de la caja sin recortarla
                 contenedor.innerHTML += `
                     <div onclick="abrirDetalleProducto('${prod.id}')" class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col justify-between transition-all cursor-pointer hover:shadow-xl hover:border-gray-200 group relative">
                         <div>
-                            <div class="aspect-square w-full bg-gray-50 border border-gray-100 rounded-xl overflow-hidden mb-4 flex justify-center items-center">
-                                <img src="${fotoProd}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400'">
+                            <div class="aspect-square w-full bg-white border border-gray-100 rounded-xl overflow-hidden mb-4 flex justify-center items-center p-1">
+                                <img src="${fotoProd}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 filter drop-shadow-sm" onerror="this.src='https://via.placeholder.com/400'">
                             </div>
                             <span class="text-[9px] font-extrabold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md inline-block mb-1.5">${prod.marca}</span>
                             <h3 class="font-bold text-gray-900 text-base group-hover:text-blue-600 transition-colors truncate">${prod.modelo}</h3>
@@ -415,7 +469,7 @@
             ejecutarFiltroCombinado();
         }
 
-        function guardarProductoNuevo() {
+        async function guardarProductoNuevo() {
             const marca = document.getElementById('add-marca').value;
             const modelo = document.getElementById('add-modelo').value.trim();
             const memoria = document.getElementById('add-memoria').value.trim();
@@ -426,7 +480,8 @@
             if(!modelo || !precio) { alert('Llena modelo y precio.'); return; }
             
             PRODUCTOS.unshift({ id: new Date().getTime().toString(), marca, modelo, memoria, precio, foto, desc });
-            guardarInventarioNube();
+            
+            await guardarInventarioNube();
             ejecutarFiltroCombinado();
 
             document.getElementById('add-modelo').value = ''; 
@@ -437,24 +492,24 @@
             document.getElementById('foto-base64').value = '';
             document.getElementById('preview-foto').classList.add('hidden');
             
-            alert('¡Equipo guardado con éxito en el inventario permanente!');
+            alert('¡Equipo guardado con éxito en la nube global!');
         }
 
-        function editarPrecio(id) {
+        async function editarPrecio(id) {
             const producto = PRODUCTOS.find(p => p.id === id);
             if(!producto) return;
             const nuevoPrecio = prompt(`Modificar precio para ${producto.modelo}:`, producto.precio);
             if(nuevoPrecio !== null && !isNaN(nuevoPrecio) && nuevoPrecio.trim() !== '') {
                 producto.precio = parseInt(nuevoPrecio);
-                guardarInventarioNube();
+                await guardarInventarioNube();
                 ejecutarFiltroCombinado();
             }
         }
 
-        function eliminarProducto(id) {
+        async function eliminarProducto(id) {
             if(confirm('¿Deseas borrar el producto por completo del catálogo?')) {
                 PRODUCTOS = PRODUCTOS.filter(p => p.id !== id);
-                guardarInventarioNube();
+                await guardarInventarioNube();
                 ejecutarFiltroCombinado();
             }
         }
@@ -527,7 +582,6 @@
             const total = carrito.reduce((sum, item) => sum + item.precio, 0);
             mensaje += `\n*TOTAL ESTIMADO:* $${total}.00 USD`;
 
-            // Enlace configurado perfectamente con tu número real de la tienda (0424-7357549)
             const linkWha = `https://wa.me/584247357549?text=${encodeURIComponent(mensaje)}`;
             window.open(linkWha, '_blank');
             carrito = [];
@@ -538,4 +592,4 @@
         window.onload = cargarInventarioNube;
     </script>
 </body>
-            </html>
+    </html>
