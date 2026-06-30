@@ -9,7 +9,7 @@
     <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -171,7 +171,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-50 pb-5">
                 <div class="space-y-1">
                     <p class="text-xs font-bold text-gray-900">Ubicación Física de la Agencia</p>
-                    <p class="text-gray-500 text-xs leading-relaxed font-medium">Frente a la Plaza Bolívar, Diagonal al Banco Caroní, Táriba, Estado Táchira.</p>
+                    <p class="text-gray-500 text-xs leading-relaxed font-medium">Av. Bolívar entre calles 12 y 13, Cordero, Estado Táchira.</p>
                 </div>
                 <div class="space-y-1">
                     <p class="text-xs font-bold text-gray-900">Garantía Certificada</p>
@@ -475,7 +475,6 @@
         }
 
         function cerrarModalDetalle() { document.getElementById('modal-detalle').classList.add('hidden'); }
-        // Se corrigió para evaluar bien el estado y cambiar correctamente la vista del panel
         function abrirLoginAdmin() { if(esAdminAutenticado) { toggleAdminPanel(); } else { document.getElementById('modal-login').classList.remove('hidden'); } }
         function cerrarLoginAdmin() { document.getElementById('modal-login').classList.add('hidden'); }
         
@@ -609,6 +608,7 @@
 
         function filtrarProductos() { ejecutarFiltroCombinado(); }
 
+        // Mantiene la estructura de tu mensaje profesional para WhatsApp
         function enviarPedidoWhatsApp() {
             const nombre = document.getElementById('cliente-nombre').value.trim();
             const telefono = document.getElementById('cliente-telefono').value.trim();
@@ -628,7 +628,7 @@
                 mensaje += `${index + 1}. ${item.marca} ${item.modelo} - $${item.precio} USD\n`;
             });
 
-            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+            const total = carrito.reduce((sum, item)5 => sum + item.precio, 0);
             mensaje += `\n*TOTAL ESTIMADO:* $${total}.00 USD`;
 
             const linkWha = `https://wa.me/584247357549?text=${encodeURIComponent(mensaje)}`;
@@ -639,4 +639,4 @@
         }
     </script>
 </body>
-                    </html>
+    </html>
